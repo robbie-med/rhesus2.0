@@ -87,80 +87,242 @@ async function startGame() {
 // Generate a new patient case based on the selected type
 async function generatePatientCase() {
     const prompt = `You are an advanced medical case simulation engine for an internal medicine resident training game. Your task is to generate a realistic, medically accurate, and engaging patient case of a ${selectedCaseType} where the player interacts with the patient to make diagnostic and management decisions.
+		
+	IMPORTANT - RETURN DATA IN THIS EXACT FORMAT:
+	The JSON structure below shows the EXPECTED FORMAT ONLY. DO NOT use the example values provided - generate completely new, medically accurate data appropriate for a ${selectedCaseType} case.
 	
- 	IMPORTANT - RETURN DATA IN THIS EXACT FORMAT:
 	{
-	  "demographics": "65-year-old male with history of hypertension, diabetes. Medications: metformin, lisinopril", 
-	  "chiefComplaint": "I've been feeling really short of breath for the past two days",
-	  "history": "The patient reports increasing shortness of breath over the past two days, worse with exertion...",
-	  "vitalSigns": {
-	    "HR": 75,
-	    "BPSystolic": 120,
-	    "BPDiastolic": 80,
-	    "RR": 18,
-	    "Temp": 37.0,
-	    "O2Sat": 95
+	  "demographics": {
+	    "age": "[GENERATE AGE APPROPRIATE FOR THIS CONDITION]",
+	    "gender": "[GENERATE]",
+	    "ethnicity": "[GENERATE]",
+	    "occupation": "[GENERATE]",
+	    "maritalStatus": "[GENERATE]",
+	    "insurance": "[GENERATE]"
 	  },
-	  "diagnosis": "Community-acquired pneumonia"
+	  "initialPresentation": {
+	    "chiefComplaint": "[GENERATE REALISTIC CHIEF COMPLAINT]",
+	    "initialVitals": {
+	      "HR": "[GENERATE]",
+	      "BPSystolic": "[GENERATE]",
+	      "BPDiastolic": "[GENERATE]",
+	      "RR": "[GENERATE]",
+	      "Temp": "[GENERATE]",
+	      "O2Sat": "[GENERATE]",
+	      "Pain": "[GENERATE]"
+	    },
+	    "generalAppearance": "[GENERATE]"
+	  },
+	  "medicalHistory": {
+	    "pastMedicalHistory": [
+	      // Generate any number of medical conditions appropriate for this case
+	      {"condition": "[GENERATE]", "diagnosedYear": "[GENERATE]", "controlled": "[GENERATE]", "details": "[GENERATE]"}
+	      // Add more conditions as clinically relevant
+	    ],
+	    "pastSurgicalHistory": [
+	      // Generate any number of surgical procedures appropriate for this case
+	      {"procedure": "[GENERATE]", "year": "[GENERATE]", "complications": "[GENERATE]"}
+	      // Add more procedures as clinically relevant, or leave empty if none
+	    ],
+	    "medications": [
+	      // Generate any number of medications appropriate for this case
+	      {"name": "[GENERATE]", "dose": "[GENERATE]", "frequency": "[GENERATE]", "adherence": "[GENERATE]"}
+	      // Add more medications as clinically relevant, or leave minimal if appropriate
+	    ],
+	    "allergies": [
+	      // Generate any number of allergies appropriate for this case
+	      {"allergen": "[GENERATE]", "reaction": "[GENERATE]", "severity": "[GENERATE]"}
+	      // Add more allergies as clinically relevant, or leave empty if none
+	    ],
+	    "immunizations": {
+	      "fluVaccine": {"received": "[GENERATE]", "lastDate": "[GENERATE]"},
+	      "pneumococcalVaccine": {"received": "[GENERATE]", "lastDate": "[GENERATE]"},
+	      "covidVaccine": {"received": "[GENERATE]", "lastDate": "[GENERATE]", "booster": "[GENERATE]"},
+	      "tetanus": {"received": "[GENERATE]", "lastDate": "[GENERATE]"}
+	    }
+	  },
+	  "familyHistory": [
+	    // Generate any number of family members appropriate for this case
+	    {"relation": "[GENERATE]", "conditions": ["[GENERATE]"], "deceased": "[GENERATE]", "ageAtDeath": "[GENERATE IF DECEASED]", "causeOfDeath": "[GENERATE IF DECEASED]"}
+	    // Add more family members as clinically relevant
+	  ],
+	  "socialHistory": {
+	    "tobaccoUse": {"status": "[GENERATE]", "details": "[GENERATE]"},
+	    "alcoholUse": {"status": "[GENERATE]", "details": "[GENERATE]"},
+	    "substanceUse": {"status": "[GENERATE]", "details": "[GENERATE]"},
+	    "sexualHistory": {"status": "[GENERATE]", "details": "[GENERATE]"},
+	    "exercise": {"frequency": "[GENERATE]", "details": "[GENERATE]"},
+	    "diet": {"pattern": "[GENERATE]", "details": "[GENERATE]"},
+	    "livingArrangement": "[GENERATE]",
+	    "travelHistory": {"recent": "[GENERATE]", "significant": "[GENERATE]"}
+	  },
+	  "historyOfPresentIllness": {
+	    "duration": "[GENERATE]",
+	    "onset": "[GENERATE]",
+	    "location": "[GENERATE]",
+	    "quality": "[GENERATE]",
+	    "severity": "[GENERATE]",
+	    "aggravating": [
+	      // Generate any number of aggravating factors appropriate for this condition
+	      "[GENERATE]"
+	      // Add more as clinically relevant
+	    ],
+	    "alleviating": [
+	      // Generate any number of alleviating factors appropriate for this condition
+	      "[GENERATE]"
+	      // Add more as clinically relevant
+	    ],
+	    "associatedSymptoms": [
+	      // Generate any number of associated symptoms appropriate for this condition
+	      {"symptom": "[GENERATE]", "duration": "[GENERATE]", "details": "[GENERATE]"}
+	      // Add more as clinically relevant
+	    ],
+	    "pertinentNegatives": [
+	      // Generate pertinent negative findings appropriate for this condition
+	      "[GENERATE]"
+	      // Add more as clinically relevant
+	    ],
+	    "patientInsights": "[GENERATE]"
+	  },
+	  "physicalExamination": {
+	    "vitals": "See initialVitals",
+	    "general": "[GENERATE]",
+	    "heent": {"appearance": "[GENERATE]", "eyes": "[GENERATE]", "ears": "[GENERATE]", "nose": "[GENERATE]", "throat": "[GENERATE]", "neck": "[GENERATE]"},
+	    "cardiovascular": {"rhythm": "[GENERATE]", "sounds": "[GENERATE]", "murmurs": "[GENERATE]", "peripheral": "[GENERATE]"},
+	    "respiratory": {"effort": "[GENERATE]", "sounds": "[GENERATE]", "percussion": "[GENERATE]"},
+	    "abdominal": {"appearance": "[GENERATE]", "bowelSounds": "[GENERATE]", "tenderness": "[GENERATE]", "organomegaly": "[GENERATE]"},
+	    "neurological": {"mentalStatus": "[GENERATE]", "cranialNerves": "[GENERATE]", "motorStrength": "[GENERATE]", "sensory": "[GENERATE]", "reflexes": "[GENERATE]", "coordination": "[GENERATE]"},
+	    "skin": {"color": "[GENERATE]", "rashes": "[GENERATE]", "lesions": "[GENERATE]"}
+	  },
+	  "initialDiagnosticTests": {
+	    "ekg": "[GENERATE]",
+	    "chestXray": "[GENERATE]",
+	    "labWork": {
+	      "cbc": {
+	        "wbc": "[GENERATE]",
+	        "hgb": "[GENERATE]",
+	        "hct": "[GENERATE]",
+	        "plt": "[GENERATE]"
+	      },
+	      "bmp": {
+	        "sodium": "[GENERATE]",
+	        "potassium": "[GENERATE]",
+	        "chloride": "[GENERATE]",
+	        "co2": "[GENERATE]",
+	        "bun": "[GENERATE]",
+	        "creatinine": "[GENERATE]",
+	        "glucose": "[GENERATE]"
+	      },
+	      "[ADDITIONAL RELEVANT LABS]": "[GENERATE]",
+	      "[ADDITIONAL RELEVANT LABS]": "[GENERATE]"
+	    }
+	  },
+	  "hiddenMedicalIssues": {
+	    "medicationNonCompliance": "[GENERATE IF RELEVANT]",
+	    "unreportedSymptoms": "[GENERATE IF RELEVANT]",
+	    "unreportedHabits": "[GENERATE IF RELEVANT]",
+	    "psychosocialFactors": "[GENERATE IF RELEVANT]"
+	  },
+	  "diagnosis": {
+	    "primary": "[GENERATE THE ACTUAL DIAGNOSIS]",
+	    "etiology": "[GENERATE]",
+	    "complications": [
+	      // Generate any complications appropriate for this condition
+	      "[GENERATE]"
+	      // Add more as clinically relevant
+	    ],
+	    "secondaryIssues": [
+	      // Generate any secondary issues appropriate for this case
+	      "[GENERATE]"
+	      // Add more as clinically relevant
+	    ],
+	    "differentialDiagnosis": [
+	      // Generate a robust differential appropriate for this presentation
+	      {"condition": "[GENERATE]", "supportingEvidence": "[GENERATE]", "contraryEvidence": "[GENERATE]"}
+	      // Add more as clinically relevant - at least 3-5 reasonable alternatives
+	    ]
+	  },
+	  "expectedManagement": {
+	    "immediate": [
+	      // Generate immediate management steps appropriate for this condition
+	      {"action": "[GENERATE]", "rationale": "[GENERATE]"}
+	      // Add as many as clinically appropriate
+	    ],
+	    "shortTerm": [
+	      // Generate short-term management steps appropriate for this condition
+	      {"action": "[GENERATE]", "rationale": "[GENERATE]"}
+	      // Add as many as clinically appropriate
+	    ],
+	    "longTerm": [
+	      // Generate long-term management steps appropriate for this condition
+	      {"action": "[GENERATE]", "rationale": "[GENERATE]"}
+	      // Add as many as clinically appropriate
+	    ]
+	  },
+	  "caseProgression": {
+	    "untreated": [
+	      // Generate progression timeline if condition remains untreated
+	      {"timePoint": "[GENERATE]", "changes": "[GENERATE]"}
+	      // Add as many timepoints as clinically appropriate
+	    ],
+	    "appropriateTreatment": [
+	      // Generate progression timeline with appropriate treatment
+	      {"timePoint": "[GENERATE]", "changes": "[GENERATE]"}
+	      // Add as many timepoints as clinically appropriate
+	    ],
+	    "complications": [
+	      // Generate potential complications and their triggers
+	      {"complication": "[GENERATE]", "trigger": "[GENERATE]"}
+	      // Add as many as clinically appropriate
+	    ]
+	  }
 	}
- 
- 	Case Requirements:
-		- The case should be appropriately challenging for an internal medicine resident.
-		- It should simulate an actual patient encounter, allowing for history-taking, physical exam findings, and diagnostic decision-making.
-		- The final diagnosis should be hidden from the player, requiring them to work through the case.
-	Case Structure:
-		1. Patient Demographics:
-		   - Age, gender, ethnicity (if relevant)
-		   - Any significant past medical history, family history, social history (smoking, alcohol, drug use)
-		   - Medications the patient is currently taking
-		 2. Chief Complaint (CC):
-		   - A brief and natural patient-reported reason for the visit (e.g., "I've been feeling really short of breath for the past two days.")
-		 3. History of Present Illness (HPI):
-		   - Detailed narrative including:
-			 - Onset (acute, chronic, progressive)
-			 - Location (if applicable)
-			 - Duration (how long the symptoms have lasted)
-			 - Character (sharp, dull, burning, etc.)
-			 - Alleviating/aggravating factors (what makes it better or worse)
-			 - Associated symptoms (e.g., fever, nausea, weight loss, night sweats)
-			 - Pertinent negatives (e.g., denies chest pain, denies recent travel)
-			 - Recent relevant exposures (e.g., sick contacts, travel, hospitalizations, new medications, recent procedures)
-		 4. Vital Signs:
-		   - Heart Rate (HR)
-		   - Blood Pressure (BP)
-		   - Respiratory Rate (RR)
-		   - Temperature (Temp)
-		   - Oxygen Saturation (O2 Sat)
-		   - (Include a realistic set of vitals based on the case)
-		 5. Physical Examination:
-		   - General appearance (e.g., "Patient appears uncomfortable, diaphoretic.")
-		   - Relevant system-specific findings (e.g., "Bilateral crackles at lung bases" for CHF, "Systolic murmur loudest at the right upper sternal border" for aortic stenosis)
-		   - Neurological findings if relevant (e.g., "Decreased strength in right upper and lower extremity, positive Babinski sign.")
-		 6. Diagnostic Workup:
-		   - Laboratory results: Provide normal vs. abnormal values as appropriate. Include key findings like:
-			 - CBC, BMP, liver function tests, cardiac enzymes, inflammatory markers, coagulation panel, etc.
-		   - Imaging findings (e.g., CXR, CT scan, MRI, ultrasound)
-		   - EKG if relevant (e.g., "Sinus tachycardia with ST depressions in leads II, III, aVF")
-		   - Point-of-care tests (POCT) (e.g., "Urinalysis shows +2 protein, +1 blood")
-		 7. The Underlying Diagnosis (Hidden from Player):
-		   - Clearly define the correct final diagnosis.
-		   - Include differential diagnoses the player should consider.
-		   - Explain why this diagnosis fits the patient presentation.
-		Additional Features for Interactivity:
-		1. Dynamic Patient Responses:
-		   - If the player asks a relevant question, provide a realistic patient response (e.g., "No, I haven't had any recent fevers, but I did have a bad cough last week.")
-		   - If the player asks an irrelevant or vague question, make the patient respond accordingly (e.g., "I'm not sure what you mean, doc.")
-		2. Progressive Case Evolution:
-		   - The patient's condition may worsen if the correct intervention is delayed.
-		   - Critical findings should become more apparent over time.
-		3. Scoring System (if applicable):
-		   - The player is scored based on:
-			 - Correct history-taking questions asked.
-			 - Accuracy of physical exam interpretation.
-			 - Diagnostic reasoning and test ordering.
-			 - Correctness of treatment decisions.
-
-	Return valid JSON without any markdown formatting or additional text, using exactly the field names specified above.`;
+	
+	Case Requirements:
+	  - Create a medically accurate ${selectedCaseType} case with realistic presentation, history, and findings
+	  - The case should be appropriately challenging for an internal medicine resident
+	  - It should simulate an actual patient encounter, allowing for history-taking, physical exam findings, and diagnostic decision-making
+	  - Create a case that unfolds gradually, requiring players to actively investigate rather than having all information immediately available
+	  - Include realistic psychosocial factors that complicate care (medication non-adherence, delayed seeking of care, etc.)
+	  - Include realistic diagnostic ambiguity where appropriate
+	
+	Design the case with these educational goals:
+	  1. Teach comprehensive history taking skills (beyond chief complaint)
+	  2. Provide practice in recognizing typical presentations of common conditions
+	  3. Reinforce the importance of thorough physical examination
+	  4. Encourage appropriate diagnostic test ordering and interpretation
+	  5. Develop differential diagnosis skills
+	  6. Practice appropriate and timely intervention
+	  7. Develop awareness of how social determinants affect health outcomes
+	
+	Guidelines for dynamic dialogue generation:
+	  1. DO NOT include predetermined dialogue in your response. The specific dialogue will be generated dynamically when players interact with the patient or nurse.
+	  
+	  2. Include all relevant medical information in the appropriate structured fields, so it can be used later to generate realistic dialogue.
+	  
+	  3. The simulation will use the information provided to:
+	     - Generate patient responses that reveal information gradually, requiring thorough questioning
+	     - Create nurse observations that sometimes notice things the patient doesn't mention
+	     - Include occasional inconsistencies, omissions, or deflections as real patients would exhibit
+	     - Reveal hidden issues only with persistent or specific questioning
+	  
+	  4. Patient characteristics to consider for dynamic dialogue:
+	     - Education level and medical literacy
+	     - Anxiety/comfort level discussing sensitive topics
+	     - Potential areas of shame or embarrassment
+	     - Memory/recall issues (especially in elderly patients)
+	     - Cultural factors that might affect communication
+	  
+	  5. Make sure all necessary medical details are included in the structured fields, as the dialogue generation depends on this data being complete.
+	
+	Return valid JSON without any markdown formatting or additional text, using exactly the field names specified above. You MUST:
+	1. Replace all the [GENERATE] placeholders with appropriate medical content
+	2. Remove all the comments (lines starting with //)
+	3. Generate any number of array items as appropriate (don't feel constrained by the template)
+	4. Add or remove fields from the labWork section as appropriate for the specific case
+	5. Ensure the JSON is properly formatted with correct syntax
+	
+	The structure shown is just a template - you should create a comprehensive, realistic case with the appropriate number of elements in each array based on the clinical scenario.`;
     
     try {
         const response = await callAPI([{ role: "user", content: prompt }]);
